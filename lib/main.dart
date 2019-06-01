@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:med_rescue/screens/splash/splash_screen.dart';
 
+import 'resources/color.dart';
+import 'screens/onboarding/onbording_page.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: primaryRed,
       ),
-      home: SplashScreen()//MyHomePage(title: 'Flutter Demo Home Page'),
+      home: OnboardingPage()//MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -34,7 +37,7 @@ const MaterialColor primaryRed = MaterialColor(
     200: Color(0xFFEF9A9A),
     300: Color(0xFFE57373),
     400: Color(0xFFEF5350),
-    500: Color(_redPrimaryValue),
+    500: primaryColor,//Color(_redPrimaryValue),
     600: Color(0xFFE53935),
     700: Color(0xFFD32F2F),
     800: Color(0xFFC62828),

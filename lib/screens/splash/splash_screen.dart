@@ -9,25 +9,27 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-        Container(
-          height: 3,
-          color: Colors.black,
-            child: Container(
-              color: primaryColor,
-          margin: EdgeInsets.only(
-            right: MediaQuery.of(context).size.width / 4,
-          ),
-        )),
-      ],
+          Container(
+              height: 3,
+              color: Colors.black,
+              child: Container(
+                color: primaryColor,
+                margin: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width / 4,
+                ),
+              )),
+        ],
+      ),
     );
   }
 }
