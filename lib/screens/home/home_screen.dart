@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:med_rescue/resources/color.dart';
+import 'package:med_rescue/screens/bloc/user_bloc.dart';
 import 'package:med_rescue/screens/util/Navigator.dart';
+import 'package:med_rescue/screens/util/loading_spinner.dart';
 import 'package:med_rescue/screens/widgets/helper_widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -12,116 +15,131 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  UserBloc bloc;
+
   @override
   Widget build(BuildContext context) {
+    bloc = BlocProvider.of<UserBloc>(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: double.maxFinite,
-              height: 52,
-              child: Material(
-                color: Colors.white,
-                elevation: 16.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                  Image.asset("assets/icons/med_logo.png", width: 32, fit: BoxFit.contain,)
-                ],),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(32.0),
-              color: Color(0xFFF7F7F7),
-              child: Column(
-                children: <Widget>[
-                  Text("Location", style: Theme.of(context).textTheme.title),
-                  gap(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.my_location, size: 20, color: Colors.grey[600]),
-                      gap(width: 8),
-                      Text("Lat: 14.7045"),
-                      gap(width: 8),
-                      Text("Lon: 14.7045")
-                    ],
+      body: StreamBuilder<UserSessionData>(
+          stream: bloc.userStream,
+          builder: (context, stream){
+
+        if(stream.hasData){
+          var userdata = stream.data;
+          return SafeArea(
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  width: double.maxFinite,
+                  height: 52,
+                  child: Material(
+                    color: Colors.white,
+                    elevation: 16.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset("assets/icons/med_logo.png", width: 32, fit: BoxFit.contain,)
+                      ],),
                   ),
-                  gap(height: 16),
-              Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.location_on, size: 20, color: Colors.grey[600]),
-                gap(width: 8),
-                Text("13, Hughes Avenue,"),
-                Text("Lagos")
-              ],
-            )
-                ],
-              ),
-            ),
-            Expanded(child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                  child: Stack(
+                ),
+                Container(
+                  padding: EdgeInsets.all(32.0),
+                  color: Color(0xFFF7F7F7),
+                  child: Column(
                     children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          color: primaryColor.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(110.0),
-                        ),
-                        height: 220,
-                        width: 220,
-                        alignment: Alignment.center,
-                        child: Stack(
-                          children: <Widget>[
-                            Center(
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: 180,
-                                width: 180,
-                                decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.circular(90.0),
-                                ),
-                              ),
-                            ),
-                            /*Positioned(
-                              height: 220,
-                              width: 220,
-                              child: SpinKitPulse(
-                                duration: Duration(seconds: 2),
-                                size: 220,
-                                color: primaryColor,
-                              ),
-                            ),*/
-                            Center(child: Image.asset("assets/icons/med_logo_white.png", height: 90, width: 90, color: Colors.white,)),
-                          ],
-                        ),
+                      Text("Location", style: Theme.of(context).textTheme.title),
+                      gap(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.my_location, size: 20, color: Colors.grey[600]),
+                          gap(width: 8),
+                          Text("Lat: ${userdata.latitude}"),
+                          gap(width: 8),
+                          Text("Lon: ${userdata.longitude}")
+                        ],
                       ),
-                      InkWell(
-                        child: SizedBox(
-                          height: 220,
-                          width: 220,
-                        ),
-                        onTap: (){
-//                          print("Alarm trigger tapped");
-                          showAlarmConfirmDialog();
-                        },
+                      gap(height: 8),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Icon(Icons.location_on, size: 20, color: Colors.grey[600]),
+                          gap(width: 4),
+                          Expanded(child: Text("${userdata.address}", maxLines: 3, softWrap: true,
+                            textAlign: TextAlign.center,)),
+                        ],
                       )
                     ],
                   ),
                 ),
-                gap(height: 16),
-                Text("Tap to trigger the Alarm in case of\nMedical Emergency", style: TextStyle(height: 1.4), textAlign: TextAlign.center,)
+                Expanded(child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              color: primaryColor.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(125.0),
+                            ),
+                            height: 250,
+                            width: 250,
+                            alignment: Alignment.center,
+                            child: Stack(
+                              children: <Widget>[
+                                Center(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(100.0),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                              height: 250,
+                              width: 250,
+                              child: SpinKitPulse(
+                                duration: Duration(seconds: 4),
+                                size: 250,
+                                color: primaryColor,
+                              ),
+                            ),
+                                Center(child: Image.asset("assets/icons/med_logo_white.png", height: 100, width: 100, color: Colors.white,)),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            child: SizedBox(
+                              height: 250,
+                              width: 250,
+                            ),
+                            onTap: (){
+//                          print("Alarm trigger tapped");
+                              showAlarmConfirmDialog();
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    gap(height: 16),
+                    Text("Tap to trigger the Alarm in case of\nMedical Emergency", style: TextStyle(height: 1.4), textAlign: TextAlign.center,)
+                  ],
+                )),
               ],
-            )),
-          ],
-        ),
-      ),
+            ),
+          );
+        }
+
+        return Center(child: LoadingSpinner());
+
+      })
     );
   }
 

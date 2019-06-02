@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:med_rescue/model/signup_dto.dart';
 import 'package:med_rescue/resources/color.dart';
+import 'package:med_rescue/screens/bloc/user_bloc.dart';
 import 'package:med_rescue/screens/home/home_screen.dart';
 import 'package:med_rescue/screens/sign_up/singup_stage_2.dart';
 import 'package:med_rescue/screens/onboarding/third_screen.dart';
@@ -49,13 +51,16 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+  UserBloc bloc;
+
   @override
   Widget build(BuildContext context) {
+    bloc = BlocProvider.of<UserBloc>(context);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("Sign UP", style: TextStyle(color: Colors.black)),
+        title: Text("Sign Up", style: TextStyle(color: Colors.black)),
           leading: Icon(Icons.arrow_back, color: primaryColor),
       ),
       body: PageView(
@@ -80,6 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
       print("SUCCESS => ${success.toString()}");
       if(success){
+        bloc.setUserDTO(signUpDTO);
         Future.delayed(Duration(seconds: 2), (){
           snackBar.success("Signup completed");
           Future.delayed(Duration(seconds: 2), (){

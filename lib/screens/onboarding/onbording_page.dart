@@ -81,7 +81,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[dot(nextPage == 0), dot(nextPage == 1), dot(nextPage == 2)],
+                    children: <Widget>[dot(nextPage == 1), dot(nextPage == 2), dot(nextPage == 3)],
                   )
                 ],
               ),

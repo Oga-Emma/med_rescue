@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "543451737343",
+    "firebase_url": "https://medrescue-3c90e.firebaseio.com",
+    "project_id": "medrescue-3c90e",
+    "storage_bucket": "medrescue-3c90e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543451737343:android:838735f97b722762",
+        "android_client_info": {
+          "package_name": "app.med_rescue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543451737343-9gffur3kp3g6ff1ta0t4ih7u1pff82gc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy8lAiDXQXNLo5Ycd7zMBXXlWwa9qgqk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543451737343-9gffur3kp3g6ff1ta0t4ih7u1pff82gc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "543451737343-3s7bmcbtqgmqg7gjcv8dnfl1m5dc92at.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.medRescue"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

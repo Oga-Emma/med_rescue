@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:med_rescue/resources/color.dart';
 import 'package:med_rescue/screens/home/home_screen.dart';
+import 'package:med_rescue/screens/location/get_location_screen.dart';
 import 'package:med_rescue/screens/onboarding/onbording_page.dart';
 import 'package:med_rescue/screens/util/Navigator.dart';
 import 'package:med_rescue/service/signup_data_dao.dart';
@@ -14,21 +15,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    try{
       Future.delayed(Duration(seconds: 3), (){
-        SignUpDataDAO.getUserInfo()
-            .then((user){
-          if(user != null){
-            SvNavigate(context, HomeScreen(), rootNavigator: true);
-          }else{
-            SvNavigate(context, OnboardingPage(), rootNavigator: true);
-          }
-        });
-      });
-
-    }catch(e){
-      SvNavigate(context, OnboardingPage(), rootNavigator: true);
-    }
+        SvNavigate(context, GetLocationScreen(), rootNavigator: true);
+    });
     super.initState();
   }
 

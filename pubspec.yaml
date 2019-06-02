@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  firebase_core: ^0.4.0
+  firebase_database: ^3.0.2
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -31,10 +34,22 @@ dependencies:
   location_permissions: ^2.0.1
   uuid: ^2.0.1
   shared_preferences: ^0.5.3
+  generic_bloc_provider: ^1.0.9
+  rxdart: ^0.22.0
+
+dependency_overrides:
+  image: 2.0.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: "^0.6.1"
+
+flutter_icons:
+  image_path: "assets/icons/med_logo.png"
+  android: true
+  ios: true
 
 
 # For information on the generic Dart part of this file, see the
