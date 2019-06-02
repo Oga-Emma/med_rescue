@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:med_rescue/screens/home/home_screen.dart';
 import 'package:med_rescue/screens/splash/splash_screen.dart';
 
 import 'resources/color.dart';
 import 'screens/onboarding/onbording_page.dart';
+import 'screens/sign_up/signup_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,8 +25,9 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: primaryRed,
+        primaryColorDark: primaryRed[900]
       ),
-      home: OnboardingPage()//MyHomePage(title: 'Flutter Demo Home Page'),
+      home: SplashScreen()//HomeScreen()//SignUpPage()//OnboardingPage()//MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

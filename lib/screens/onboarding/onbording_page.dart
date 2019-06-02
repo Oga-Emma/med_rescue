@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:med_rescue/resources/color.dart';
 import 'package:med_rescue/screens/onboarding/third_screen.dart';
+import 'package:med_rescue/screens/sign_up/signup_screen.dart';
+import 'package:med_rescue/screens/util/Navigator.dart';
 import 'package:med_rescue/screens/widgets/helper_widgets.dart';
 
 import 'first_screen.dart';
@@ -15,7 +17,7 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
 
   final controller = PageController(initialPage: 0);
-  int currentPage = 0;
+  int nextPage = 1;
   final pages =  <Widget>[
     FirstScreen(),
     SecondScreen(),
@@ -35,7 +37,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               onPageChanged: (int page) {
 //                print("Current Page: " + page.toString());
                 setState(() {
-                  currentPage = ++page;
+                  nextPage = ++page;
                 });
 //                int previousPage = page;
 //                if(page != 0) previousPage--;
@@ -54,18 +56,18 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     child: RaisedButton(
                       onPressed: () {
 //                        controller.nextPage();
-                      if(currentPage <= 2) {
-                        currentPage += currentPage;
+                      if(nextPage <= 2) {
                         print("Changing");
-//                        print(currentPage.toString());
-                        controller.animateToPage(currentPage++,
+                        print(nextPage.toString());
+                        controller.animateToPage(nextPage,
                             duration: Duration(milliseconds: 500), curve: Curves.easeOutQuart);
                       }else{
-                        print("Last");
+//                        print("Last");
+                        SvNavigate(context, SignUpPage(), rootNavigator: true);
                       }
                       },
                       child: Text(
-                        currentPage == pages.length ? "Finish" : "Next",
+                        nextPage == pages.length ? "Finish" : "Next",
                         style: TextStyle(color: Colors.white),
                       ),
                       color: primaryColor,
@@ -73,12 +75,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
                   gap(height: 16),
                   FlatButton(onPressed: () {
+                    SvNavigate(context, SignUpPage(), rootNavigator: true);
                   }, child: Text("Skip")),
                   gap(height: 32),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[dot(currentPage == 0), dot(currentPage == 1), dot(currentPage == 2)],
+                    children: <Widget>[dot(nextPage == 0), dot(nextPage == 1), dot(nextPage == 2)],
                   )
                 ],
               ),
