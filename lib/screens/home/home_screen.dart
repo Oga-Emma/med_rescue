@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:med_rescue/resources/color.dart';
 import 'package:med_rescue/screens/bloc/user_bloc.dart';
@@ -64,10 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       gap(height: 8),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Icon(Icons.location_on, size: 20, color: Colors.grey[600]),
-                          gap(width: 4),
+                          Icon(Icons.location_on, size: 18, color: Colors.grey[600]),
                           Expanded(child: Text("${userdata.address}", maxLines: 3, softWrap: true,
                             textAlign: TextAlign.center,)),
                         ],
@@ -172,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if(sendAlarm){
 //      print("Sending alarm now...");
-      SvNavigate(context, AlarmSendingPage(), rootNavigator: true);
+      SvNavigate(context, AlarmSendingPage(bloc), rootNavigator: true);
     }else{
       print("Canceled");
     }

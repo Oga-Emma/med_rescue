@@ -44,8 +44,15 @@ class _SignUpStage3State extends State<SignUpStage3> {
               gap(height: 32),
               TextFormField(
                 initialValue: widget.signUpDTO.organizationCode,
-                validator: SvValidate.tryString("Invalid input"),
+                validator: (val){
+                  if(val == null || val != '65578'){
+                    return "Invalid organization code";
+                  }
+
+                  return null;
+                },
                 decoration: InputDecoration(labelText: "Organization Code"),
+                keyboardType: TextInputType.number,
                 onSaved: (String value){
                   widget.signUpDTO.organizationCode = value;
                 },

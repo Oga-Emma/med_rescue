@@ -14,6 +14,7 @@ import 'package:med_rescue/screens/util/Navigator.dart';
 import 'package:med_rescue/screens/util/loading_spinner.dart';
 import 'package:med_rescue/screens/widgets/helper_widgets.dart';
 import 'package:med_rescue/service/signup_data_dao.dart';
+import 'package:permission_handler/permission_handler.dart' as PermissionHandle;
 
 class GetLocationScreen extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _GetLocationScreenState extends State<GetLocationScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     checkLocationPermisions();
-//    fetchCurrentLocation();
+    //    fetchCurrentLocation();
 
 //    checkLocationPermisions();
   }
@@ -325,6 +326,15 @@ class _GetLocationScreenState extends State<GetLocationScreen>
         ),
       ),
     );
+  }
+
+  Future checkCallPermissions() async{
+    PermissionHandle.PermissionStatus permission = await PermissionHandle.PermissionHandler().checkPermissionStatus(PermissionHandle.PermissionGroup.phone);
+
+    if(permission != PermissionHandle.PermissionStatus.granted){
+      Map<PermissionHandle.PermissionGroup, PermissionHandle.PermissionStatus> permissions = await PermissionHandle.PermissionHandler()
+          .requestPermissions([PermissionHandle.PermissionGroup.phone]);
+    }
   }
 
   Future checkLocationPermisions() async {
