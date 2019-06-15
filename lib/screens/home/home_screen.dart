@@ -18,127 +18,152 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   UserBloc bloc;
 
+  Future<bool> _onWillPop() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Are you sure?'),
+        content: Text('Do you want to exit an App'),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('No'),
+          ),
+          FlatButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    ) ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     bloc = BlocProvider.of<UserBloc>(context);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: StreamBuilder<UserSessionData>(
-          stream: bloc.userStream,
-          builder: (context, stream){
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: StreamBuilder<UserSessionData>(
+            stream: bloc.userStream,
+            builder: (context, stream){
 
-        if(stream.hasData){
-          var userdata = stream.data;
-          return SafeArea(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  width: double.maxFinite,
-                  height: 52,
-                  child: Material(
-                    color: Colors.white,
-                    elevation: 16.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset("assets/icons/med_logo.png", width: 32, fit: BoxFit.contain,)
-                      ],),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(32.0),
-                  color: Color(0xFFF7F7F7),
-                  child: Column(
-                    children: <Widget>[
-                      Text("Location", style: Theme.of(context).textTheme.title),
-                      gap(height: 16),
-                      Row(
+          if(stream.hasData){
+            var userdata = stream.data;
+            return SafeArea(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    width: double.maxFinite,
+                    height: 52,
+                    child: Material(
+                      color: Colors.white,
+                      elevation: 16.0,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(Icons.my_location, size: 20, color: Colors.grey[600]),
-                          gap(width: 8),
-                          Text("Lat: ${userdata.latitude}"),
-                          gap(width: 8),
-                          Text("Lon: ${userdata.longitude}")
-                        ],
-                      ),
-                      gap(height: 8),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(Icons.location_on, size: 18, color: Colors.grey[600]),
-                          Expanded(child: Text("${userdata.address}", maxLines: 3, softWrap: true,
-                            textAlign: TextAlign.center,)),
-                        ],
-                      )
-                    ],
+                          Image.asset("assets/icons/med_logo.png", width: 32, fit: BoxFit.contain,)
+                        ],),
+                    ),
                   ),
-                ),
-                Expanded(child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: Stack(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              color: primaryColor.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(125.0),
-                            ),
-                            height: 250,
-                            width: 250,
-                            alignment: Alignment.center,
-                            child: Stack(
-                              children: <Widget>[
-                                Center(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 200,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(100.0),
+                  Container(
+                    padding: EdgeInsets.all(32.0),
+                    color: Color(0xFFF7F7F7),
+                    child: Column(
+                      children: <Widget>[
+                        Text("Location", style: Theme.of(context).textTheme.title.copyWith(fontWeight: FontWeight.bold)),
+                        gap(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.my_location, size: 20, color: Colors.grey[600]),
+                            gap(width: 8),
+                            Text("Lat: ${userdata.latitude}"),
+                            gap(width: 8),
+                            Text("Lon: ${userdata.longitude}")
+                          ],
+                        ),
+                        gap(height: 8),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.location_on, size: 18, color: Colors.grey[600]),
+                            gap(width: 8),
+                            Flexible(child: Text("${userdata.address}", maxLines: 2, softWrap: true,
+                              textAlign: TextAlign.center,)),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(
+                                color: primaryColor.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(125.0),
+                              ),
+                              height: 250,
+                              width: 250,
+                              alignment: Alignment.center,
+                              child: Stack(
+                                children: <Widget>[
+                                  Center(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 200,
+                                      width: 200,
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(100.0),
+                                      ),
                                     ),
                                   ),
+                                  Positioned(
+                                height: 250,
+                                width: 250,
+                                child: SpinKitPulse(
+                                  duration: Duration(seconds: 4),
+                                  size: 250,
+                                  color: primaryColor,
                                 ),
-                                Positioned(
-                              height: 250,
-                              width: 250,
-                              child: SpinKitPulse(
-                                duration: Duration(seconds: 4),
-                                size: 250,
-                                color: primaryColor,
+                              ),
+                                  Center(child: Image.asset("assets/icons/med_logo_white.png", height: 100, width: 100, color: Colors.white,)),
+                                ],
                               ),
                             ),
-                                Center(child: Image.asset("assets/icons/med_logo_white.png", height: 100, width: 100, color: Colors.white,)),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            child: SizedBox(
-                              height: 250,
-                              width: 250,
-                            ),
-                            onTap: (){
+                            InkWell(
+                              child: SizedBox(
+                                height: 250,
+                                width: 250,
+                              ),
+                              onTap: (){
 //                          print("Alarm trigger tapped");
-                              showAlarmConfirmDialog();
-                            },
-                          )
-                        ],
+                                showAlarmConfirmDialog();
+                              },
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    gap(height: 16),
-                    Text("Tap to trigger the Alarm in case of\nMedical Emergency", style: TextStyle(height: 1.4), textAlign: TextAlign.center,)
-                  ],
-                )),
-              ],
-            ),
-          );
-        }
+                      gap(height: 16),
+                      Text("Tap to trigger the Alarm in case of\nMedical Emergency", style: TextStyle(height: 1.4), textAlign: TextAlign.center,)
+                    ],
+                  )),
+                ],
+              ),
+            );
+          }
 
-        return Center(child: LoadingSpinner());
+          return Center(child: LoadingSpinner());
 
-      })
+        })
+      ),
     );
   }
 
@@ -147,19 +172,19 @@ class _HomeScreenState extends State<HomeScreen> {
         barrierDismissible: false,
         builder: (context){
       return AlertDialog(
-        title: Text("Alert"),
+        title: Text("Alert", style: Theme.of(context).textTheme.title.copyWith(fontWeight: FontWeight.bold),),
         content: Text("Are you sure you want to trigger the Alarm?"),
         actions: <Widget>[
           FlatButton(
             textColor: Colors.grey[700],
-            child: new Text("YES"),
+            child: Text("YES"),
             onPressed: () {
               Navigator.of(context).pop(true);
             },
           ),
           FlatButton(
             color: Colors.grey[300],
-            child: new Text("NO"),
+            child: Text("NO"),
             onPressed: () {
               Navigator.of(context).pop(false);
             },
@@ -171,7 +196,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if(sendAlarm){
 //      print("Sending alarm now...");
-      SvNavigate(context, AlarmSendingPage(bloc), rootNavigator: true);
+
+    Navigator.of(context).push(SvNavigate.fadeIn(AlarmSendingPage(bloc)));
+
+     /* Navigator.of(context).push<void>(
+          SvNavigate.fadeIn(AlarmSendingPage(bloc)),
+              (Route<dynamic> route) => false
+      );*/
+//      SvNavigate(context, SvNavigate.fadeIn(AlarmSendingPage(bloc)), rootNavigator: true);
     }else{
       print("Canceled");
     }

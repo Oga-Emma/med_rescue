@@ -22,6 +22,7 @@ class _AlarmSendingPageState extends State<AlarmSendingPage> {
   int _start = 10;
   int _current = 10;
   bool alarmSent = false;
+  bool alarmCanceled = false;
 
   @override
   void initState() {
@@ -63,71 +64,77 @@ class _AlarmSendingPageState extends State<AlarmSendingPage> {
   }
 
   Widget build(BuildContext context) {
+    return alarmSent ? alarmSentScreen() : countDownScreen();
+  }
+
+  countDownScreen() {
     return Scaffold(
       backgroundColor: primaryColor,
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.all(24.0),
           alignment: Alignment.center,
-          child: alarmSent ? alarmSentScreen() : countDownScreen(),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text("Stay Calm.\nHelp is on the way.",
+                  textAlign: TextAlign.center, style: TextStyle(height: 1.4, fontSize: 24, color: Colors.white),),
+
+                gap(height: 16),
+                Text("We’re contacting emergency services",
+                  textAlign: TextAlign.center, style: TextStyle(height: 1.4, color: Colors.white),),
+
+                gap(height: 50),
+                Center(
+                  child: Text("00:${_current.toString().padLeft(2, '0')}",
+                    style: Theme.of(context).textTheme.headline.copyWith(fontSize: 80, color: Colors.white),
+                  ),
+                ),
+
+                gap(height: 50),
+                FlatButton(onPressed: (){
+                  countDownTimer.cancel();
+                  sub.cancel();
+                  setState(() {
+                    alarmSent = true;
+                  });
+                }, child: Text("Skip",
+                  textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+                ),
+
+                gap(height: 16),
+                Text("You cannot cancel this alarm after the countdown expires",
+                  textAlign: TextAlign.center, style: TextStyle(height: 1.4, color: Colors.white),),
+
+                gap(height: 50),
+                SizedBox(
+                    width: double.maxFinite,
+                    height: 52.0,
+                    child: RaisedButton(onPressed: (){
+                      countDownTimer.cancel();
+                      sub.cancel();
+
+                      setState(() {
+                        alarmCanceled = true;
+                        callMade = true;
+                      });
+
+                      Navigator.of(context).pop();
+                    },
+                      textColor: Colors.white,
+                      color: primaryColor,
+                      child: Text("Cancel Alarm"),
+                      shape: RoundedRectangleBorder(side: BorderSide(color: Colors.white)),
+                    ))
+              ],
+            ),
+          )
         ),
       ),
     );
-  }
 
-  countDownScreen() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Text("Stay Calm.\nHelp is on the way.",
-            textAlign: TextAlign.center, style: TextStyle(height: 1.4, fontSize: 24, color: Colors.white),),
-
-          gap(height: 16),
-          Text("We’re contacting emergency services",
-            textAlign: TextAlign.center, style: TextStyle(height: 1.4, color: Colors.white),),
-
-          gap(height: 50),
-          Center(
-            child: Text("00:${_current.toString().padLeft(2, '0')}",
-              style: Theme.of(context).textTheme.headline.copyWith(fontSize: 80, color: Colors.white),
-            ),
-          ),
-
-          gap(height: 50),
-          FlatButton(onPressed: (){
-            countDownTimer.cancel();
-            sub.cancel();
-            setState(() {
-              alarmSent = true;
-            });
-          }, child: Text("Skip",
-            textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
-          ),
-
-          gap(height: 16),
-          Text("You cannot cancel this alarm after the countdown expires",
-            textAlign: TextAlign.center, style: TextStyle(height: 1.4, color: Colors.white),),
-
-          gap(height: 50),
-          SizedBox(
-              width: double.maxFinite,
-              height: 52.0,
-              child: RaisedButton(onPressed: (){
-
-                countDownTimer.cancel();
-                sub.cancel();
-                Navigator.of(context).pop();
-              },
-                textColor: Colors.white,
-                color: primaryColor,
-                child: Text("Cancel Alarm"),
-                shape: RoundedRectangleBorder(side: BorderSide(color: Colors.white)),
-              ))
-        ],
-      ),
-    );
   }
 
   var emergencyNumber = "07006332879";
@@ -143,35 +150,45 @@ class _AlarmSendingPageState extends State<AlarmSendingPage> {
       });
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Text("Stay Calm.\nHelp is on the way.",
-            textAlign: TextAlign.center, style: TextStyle(height: 1.4, fontSize: 24, color: Colors.white),),
+    return Scaffold(
+      backgroundColor: Color(0xff2c2c2c),
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.all(24.0),
+          alignment: Alignment.center,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("Stay Calm.\nHelp is on the way.",
+                textAlign: TextAlign.center, style: TextStyle(height: 1.4, fontSize: 24, color: Colors.white),),
 
-          gap(height: 16),
-          Text("We’re contacting emergency services",
-            textAlign: TextAlign.center, style: TextStyle(height: 1.4, color: Colors.white),),
+              gap(height: 16),
+              Text("We’re contacting emergency services",
+                textAlign: TextAlign.center, style: TextStyle(height: 1.4, color: Colors.white),),
 
-          gap(height: 100),
-          Center(
-            child: Image.asset("assets/icons/alarm.png", height: 150, width: 150, color: Colors.grey[300],)
-          ),
+              Expanded(child: gap(height: 100)),
+              Center(
+                  child: Image.asset("assets/images/message_sent.gif", height: 300, width: 300/*, color: Colors.grey[300],*/)
+              ),
 
-          gap(height: 100),
-          Text("Contacting Emergency Services...",
-            textAlign: TextAlign.center, style: TextStyle(height: 1.4, color: Colors.white),),
+              Expanded(child: gap(height: 100)),
+              Text("Contacting Emergency Services...",
+                textAlign: TextAlign.center, style: TextStyle(height: 1.4, color: Colors.white),),
 
-        ],
+            ],
+          )
+        ),
       ),
     );
+
+
   }
 
   static const callChannel = MethodChannel("app.med_rescue/callChannel");
 
   Future dialNumber(String number) async{
+
     makeDatabaseEntry();
     if (Platform.isAndroid) {
       try {
@@ -188,6 +205,10 @@ class _AlarmSendingPageState extends State<AlarmSendingPage> {
 
     }*/
     }
+
+    Future.delayed(Duration(seconds: 2), (){
+      Navigator.pop(context);
+    });
   }
 
   void launchWithUrlLauncher() {

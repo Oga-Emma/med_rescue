@@ -41,5 +41,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Med Rescue needs permission to access your location information</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Med Rescue needs permission to access your location information</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Med Rescue needs permission to access your location information</string>
 </dict>
 </plist>

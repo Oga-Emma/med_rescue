@@ -51,6 +51,10 @@ class MainActivity: FlutterActivity() {
         } else {
           result.notImplemented()
         }
+      }else if(call.method == "requestPermission"){
+        if(!isPermissionGranted()){
+          ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
+        }
       }
     }
   }

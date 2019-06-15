@@ -81,14 +81,25 @@ class _GetLocationScreenState extends State<GetLocationScreen>
           await Geocoder.local.findAddressesFromCoordinates(coordinates);
           print("Address => $addresses");
           var first = addresses.first;
+          print("First => ${first.toMap()}");
 //        print("FIRST ADDRESS => ${first.featureName} : ${first.addressLine}");
         print("STATE => ${first.toMap()}");
 //        print("STATE => ${first.subAdminArea}");
           print("STATE => ${first.adminArea}");
 //        print("STATE => ${first.countryName}");
-          var list = <String>[];
+
+
+          var address = first.addressLine;
+          if(!address.contains(first.adminArea)){
+            address = address.substring(0, address.lastIndexOf(',')) + ", ${first.adminArea} State, ${first.countryName}";
+          }
+
+          var list = <String>[address];
+//          addIfNotNull(list, first.addressLine);
+          /*if(first.addressLine == null)
           addIfNotNull(list, first.featureName);
 //          list.add(first.featureName);
+          if(first.addressLine == null)
           addIfNotNull(list, first.subLocality);
 //          list.add(first.subLocality);
           if(first.locality != first.subAdminArea) {
@@ -100,9 +111,9 @@ class _GetLocationScreenState extends State<GetLocationScreen>
           addIfNotNull(list, first.subAdminArea);
 //          list.add(first.subAdminArea);
 
-          addIfNotNull(list, first.adminArea);
+          addIfNotNull(list, first.adminArea);*/
 //          list.add(first.adminArea);
-          print("Constructed Address => ${list.join(", ")}");
+//          print("Constructed Address => ${list.join(", ")}");
 
           bloc.setAddress(list.join(", "));
 
@@ -117,7 +128,11 @@ class _GetLocationScreenState extends State<GetLocationScreen>
               .then((user){
             if(user != null){
               bloc.setUserDTO(user);
-              SvNavigate(context, HomeScreen(), rootNavigator: true);
+//              SvNavigate(context, HomeScreen(), rootNavigator: true);
+              Navigator.of(context).pushAndRemoveUntil<void>(
+                  SvNavigate.fadeIn(HomeScreen()),
+                      (Route<dynamic> route) => false
+              );
             }else{
               SvNavigate(context, OnboardingPage(), rootNavigator: true);
             }
@@ -212,7 +227,7 @@ class _GetLocationScreenState extends State<GetLocationScreen>
               ),
 
               Text(
-                "Cerchy requires your location data, for a better experience.",
+                "Med Rescue requires your location data, for a better experience.",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16.0, color: primaryColor),
               ),
@@ -221,7 +236,7 @@ class _GetLocationScreenState extends State<GetLocationScreen>
                 userPermanentlyDisableLocation
                     ? "You have permanently disable location services for this app, please go to app settings to enable permission"
                         "\nthen click access granted below to continue"
-                    : "Please grant Cerchy access to your location by accepting location permission\n"
+                    : "Please grant Med Rescue access to your location by accepting location permission\n"
                         "press accept permission and select allow on the dialog that pops up",
                 textAlign: TextAlign.center,
               ),
@@ -293,14 +308,14 @@ class _GetLocationScreenState extends State<GetLocationScreen>
               ),
 
               Text(
-                "Cerchy requires your location data, for a better experience.",
+                "Med Rescue requires your location data, for a better experience.",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16.0, color: primaryColor),
               ),
 
               gap(height: 16),
               Text(
-                "Please turn on device location from settings, grant Cerchy and relaunch app",
+                "Please turn on device location from settings, grant Med Rescue and relaunch app",
                 textAlign: TextAlign.center,
               ),
 

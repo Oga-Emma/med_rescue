@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider<UserBloc>(child: MaterialApp(
         title: 'Med Rescue',
         theme: ThemeData(
+          fontFamily: 'OpenSans',
           // This is the theme of your application.
           //
           // Try running your application with "flutter run". You'll see the
